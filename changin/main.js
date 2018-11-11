@@ -6,6 +6,18 @@ var bgColor = "#FF9900";
 var animations = [];
 var circles = [];
 var showTitle = true;
+var randomQuestions = [];
+
+function loadRandomQuestions() {
+    if (randomQuestions.length !== 0) {
+        return;
+    }
+
+    $.ajax({url: "../random_questions.txt"}).done(function(res) {
+        console.log(res.split("\n"));
+        randomQuestions = randomQuestions.concat(res.split("\n"));
+    });
+}
 
 var colorPicker = (function () {
     var colors = ["#FF9900", "#CA431D", "#8B104E", "#520556", "#41A7B3", "#1FE5BD"];
@@ -42,17 +54,6 @@ function addClickListeners() {
 };
 
 function getRandomQuestion() {
-    var randomQuestions = [
-        "첫번째 프로젝트를 간단히 소개해주세요"
-        ,"어떤 개발자가 되고 싶나요?"
-        ,"후배 개발자에게 제일 가르쳐주고 싶은 것은 무엇인가요?"
-        ,"제일 코딩하기 싫었던 장소가 있나요?"
-        ,"가장 코딩하기 좋은 장소는 어디인가요?"
-        ,"최악의 면접경험이 있나요?"
-        ,"가장 뿌듯했던 프로젝트를 간단히 소개해주세요"
-        ,"가장 자주 사용하는 리눅스 명령어가 뭔가요?"
-        ,"가장 최근에 좋아요한 오픈소스가 무엇인가요?"
-    ]
     return randomQuestions[Math.floor(Math.random()*randomQuestions.length)];
 }
 
@@ -211,6 +212,7 @@ var resizeCanvas = function () {
         startFauxClicking();
     }
     handleInactiveUser();
+    window.addEventListener('DOMContentLoaded', loadRandomQuestions)
 })();
 
 function handleInactiveUser() {

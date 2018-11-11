@@ -7,6 +7,18 @@ var pointerX = 0;
 var pointerY = 0;
 var tap = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown';
 var colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C'];
+var randomQuestions = [];
+
+function loadRandomQuestions() {
+    if (randomQuestions.length !== 0) {
+        return;
+    }
+
+    $.ajax({url: "../random_questions.txt"}).done(function(res) {
+        console.log(res.split("\n"));
+        randomQuestions = randomQuestions.concat(res.split("\n"));
+    });
+}
 
 function setCanvasSize() {
     canvasEl.width = window.innerWidth * 2;
@@ -130,17 +142,6 @@ function autoClick() {
 }
 
 function getRandomQuestion() {
-    var randomQuestions = [
-        "첫번째 프로젝트를 간단히 소개해주세요"
-        ,"어떤 개발자가 되고 싶나요?"
-        ,"후배 개발자에게 제일 가르쳐주고 싶은 것은 무엇인가요?"
-        ,"제일 코딩하기 싫었던 장소가 있나요?"
-        ,"가장 코딩하기 좋은 장소는 어디인가요?"
-        ,"최악의 면접경험이 있나요?"
-        ,"가장 뿌듯했던 프로젝트를 간단히 소개해주세요"
-        ,"가장 자주 사용하는 리눅스 명령어가 뭔가요?"
-        ,"가장 최근에 좋아요한 오픈소스가 무엇인가요?"
-    ]
     return randomQuestions[Math.floor(Math.random()*randomQuestions.length)];
 }
 
@@ -163,3 +164,4 @@ function showText() {
 autoClick();
 setCanvasSize();
 window.addEventListener('resize', setCanvasSize, false);
+window.addEventListener('DOMContentLoaded', loadRandomQuestions)
