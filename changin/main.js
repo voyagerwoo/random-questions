@@ -14,8 +14,8 @@ function loadRandomQuestions() {
     }
 
     $.ajax({url: "../random_questions.txt"}).done(function(res) {
-        console.log(res.split("\n"));
-        randomQuestions = randomQuestions.concat(res.split("\n"));
+        randomQuestions = res.split("\n").filter(function(t){return !!t});
+        console.log(randomQuestions);
     });
 }
 
